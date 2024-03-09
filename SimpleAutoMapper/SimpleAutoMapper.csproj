@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryUrl>https://github.com/NetoBatista/simple_auto_mapper</RepositoryUrl>
+		<Company>JBSN</Company>
+		<Authors>JBSN</Authors>
+		<Version>1.0.0</Version>
+		<Title>$(AssemblyName)</Title>
+		<Description>SimpleAutoMapper is a lightweight C# library for efficient and intuitive object-to-object mapping. It simplifies the process of transforming data models in your applications, reducing the need for repetitive code. Install via NuGet to enhance your data handling capabilities</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+		<None Include="..\LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>
