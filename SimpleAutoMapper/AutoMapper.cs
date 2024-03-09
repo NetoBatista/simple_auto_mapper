@@ -4,12 +4,34 @@ namespace SimpleAutoMapper
 {
     public class AutoMapper
     {
-        public static T? Map<T>(object source) where T : new()
+        public static T? Map<T>(object source)
         {
-            return (T?)Map(source, typeof(T));
+            if (source is not IEnumerable sourceList || !typeof(T).GetInterfaces().Contains(typeof(IEnumerable)))
+            {
+                return (T?)Map(source, typeof(T));
+            }
+
+            var itemType = typeof(T).GetGenericArguments()[0];
+            var targetList = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
+
+            if (targetList == null)
+            {
+                return (T?)targetList;
+            }
+
+            foreach (var sourceObject in sourceList)
+            {
+                var targetObject = Map(sourceObject, itemType);
+                if (targetObject != null)
+                {
+                    targetList.Add(targetObject);
+                }
+            }
+
+            return (T?)targetList;
         }
 
-        public static object? Map(object source, Type targetType)
+        private static object? Map(object source, Type targetType)
         {
             var target = Activator.CreateInstance(targetType);
             var sourceType = source.GetType();
