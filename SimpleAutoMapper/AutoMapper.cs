@@ -44,7 +44,7 @@ namespace SimpleAutoMapper
                 {
                     if (sourceProperty.Name != targetProperty.Name)
                     {
-                        break;
+                        continue;
                     }
 
                     if (sourceProperty.PropertyType.IsGenericType &&
