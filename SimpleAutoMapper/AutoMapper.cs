@@ -70,10 +70,15 @@ namespace SimpleAutoMapper
 
                     if (sourceProperty.PropertyType.IsPrimitive ||
                         sourceProperty.PropertyType.IsEnum ||
-                        sourceProperty.PropertyType.Equals(typeof(string)) ||
                         sourceProperty.PropertyType.IsArray ||
+                        sourceProperty.PropertyType.Equals(typeof(string)) ||
                         sourceProperty.PropertyType.Equals(typeof(Guid)) ||
                         sourceProperty.PropertyType.Equals(typeof(DateTime)) ||
+                        sourceProperty.PropertyType.Equals(typeof(decimal)) ||
+                        sourceProperty.PropertyType.Equals(typeof(double)) ||
+                        sourceProperty.PropertyType.Equals(typeof(int)) ||
+                        sourceProperty.PropertyType.Equals(typeof(long)) ||
+                        sourceProperty.PropertyType.Equals(typeof(char)) ||
                         Nullable.GetUnderlyingType(sourceProperty.PropertyType) != null
                        )
                     {
