@@ -82,7 +82,7 @@ namespace SimpleAutoMapper
                         Nullable.GetUnderlyingType(sourceProperty.PropertyType) != null
                        )
                     {
-                        if (sourceProperty.PropertyType != targetProperty.PropertyType || !targetProperty.CanWrite)
+                        if (!targetProperty.CanWrite)
                         {
                             break;
                         }

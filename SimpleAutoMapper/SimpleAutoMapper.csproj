@@ -13,10 +13,10 @@
 		<RepositoryUrl>https://github.com/NetoBatista/simple_auto_mapper</RepositoryUrl>
 		<Company>JBSN</Company>
 		<Authors>JBSN</Authors>
-		<Version>1.1.2</Version>
+		<Version>1.1.3</Version>
 		<Title>$(AssemblyName)</Title>
 		<Description>SimpleAutoMapper is a lightweight C# library for efficient and intuitive object-to-object mapping. It simplifies the process of transforming data models in your applications, reducing the need for repetitive code. Install via NuGet to enhance your data handling capabilities</Description>
-		<PackageTags>1.1.2</PackageTags>
+		<PackageTags>1.1.3</PackageTags>
 		<PackageReleaseNotes>Fix problem mapping</PackageReleaseNotes>
 	</PropertyGroup>
 

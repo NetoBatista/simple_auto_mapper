@@ -7,9 +7,9 @@ SimpleAutoMapper is a lightweight and easy-to-use library for automatic object m
 SimpleAutoMapper is available as a NuGet package. You can install it using the NuGet package manager in Visual Studio or through the command line.
 
 ```shell
-Install-Package SimpleAutoMapper -Version 1.0.0
+Install-Package SimpleAutoMapper -Version 1.1.3
 ```
-You can also download the package directly from the NuGet website at https://www.nuget.org/packages/SimpleAutoMapper/1.0.0.
+You can also download the package directly from the NuGet website at https://www.nuget.org/packages/SimpleAutoMapper.
 
 How to use
 To use SimpleAutoMapper, first add the following line at the top of your file:
