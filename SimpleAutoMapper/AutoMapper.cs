@@ -1,113 +1,164 @@
 ﻿using System.Collections;
+using System.Reflection;
 
 namespace SimpleAutoMapper
 {
-    public class AutoMapper
+    public static class AutoMapper
     {
-        public static T? Map<T>(object source)
+        public static TDestination? Map<TDestination>(object source) where TDestination : new()
         {
-            if (source is not IEnumerable sourceList || !typeof(T).GetInterfaces().Contains(typeof(IEnumerable)))
+            if (source == null)
             {
-                return (T?)Map(source, typeof(T));
+                return default;
             }
 
-            var itemType = typeof(T).GetGenericArguments()[0];
-            var targetList = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
-
-            if (targetList == null)
+            if (source is not IEnumerable || !typeof(TDestination).GetInterfaces().Contains(typeof(IEnumerable)))
             {
-                return (T?)targetList;
+                var destination = new TDestination();
+                MapObject(source, destination);
+                return destination;
             }
 
-            foreach (var sourceObject in sourceList)
+            var sourceList = (IEnumerable)source;
+            var itemType = typeof(TDestination).GetGenericArguments()[0];
+            var destinationList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
+
+            foreach (var item in sourceList)
             {
-                var targetObject = Map(sourceObject, itemType);
-                if (targetObject != null)
-                {
-                    targetList.Add(targetObject);
-                }
+                var mappedItem = MapItem(itemType, item);
+                destinationList.Add(mappedItem);
             }
 
-            return (T?)targetList;
+            return (TDestination)destinationList;
         }
 
-        private static object? Map(object source, Type targetType)
+        private static object? MapItem(Type destinationType, object source)
         {
-            var target = Activator.CreateInstance(targetType);
+            if (source == null)
+            {
+                return null;
+            }
+
+            if (IsPrimitiveOrSimpleType(destinationType) || destinationType.IsEnum)
+            {
+                return source;
+            }
+
+            var destination = Activator.CreateInstance(destinationType);
+            if (destination != null)
+            {
+                MapObject(source, destination);
+            }
+
+            return destination;
+        }
+
+        private static void MapObject(object source, object destination)
+        {
             var sourceType = source.GetType();
-            var sourceProperties = sourceType.GetProperties();
-            var targetProperties = targetType.GetProperties();
+            var destinationType = destination.GetType();
 
-            foreach (var sourceProperty in sourceProperties)
+            foreach (var destProp in destinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                foreach (var targetProperty in targetProperties)
+                if (!destProp.CanWrite)
                 {
-                    if (sourceProperty.Name != targetProperty.Name)
+                    continue;
+                }
+
+                var sourceProp = sourceType.GetProperty(destProp.Name, BindingFlags.Public | BindingFlags.Instance);
+                if (sourceProp == null || !sourceProp.CanRead)
+                {
+                    continue;
+                }
+
+                var sourceValue = sourceProp.GetValue(source);
+                if (sourceValue == null)
+                {
+                    continue;
+                }
+
+                var destPropType = destProp.PropertyType;
+
+                if (IsPrimitiveOrSimpleType(destPropType) || destPropType.IsEnum)
+                {
+                    destProp.SetValue(destination, sourceValue);
+                }
+                else if (typeof(IEnumerable).IsAssignableFrom(destPropType))
+                {
+                    MapCollection(sourceValue, destProp, destination);
+                }
+                else
+                {
+                    var nestedDestination = Activator.CreateInstance(destPropType);
+                    if (nestedDestination != null)
                     {
-                        continue;
+                        MapObject(sourceValue, nestedDestination);
                     }
-
-                    if (sourceProperty.PropertyType.IsGenericType &&
-                        sourceProperty.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-                    {
-                        var itemType = targetProperty.PropertyType.GetGenericArguments()[0];
-                        var sourceList = (IList?)sourceProperty.GetValue(source);
-                        var targetList = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
-
-                        if (sourceList == null || targetList == null)
-                        {
-                            break;
-                        }
-
-                        foreach (var item in sourceList)
-                        {
-                            targetList.Add(Map(item, itemType));
-                        }
-
-                        targetProperty.SetValue(target, targetList);
-                        break;
-                    }
-
-                    if (sourceProperty.PropertyType.IsPrimitive ||
-                        sourceProperty.PropertyType.IsEnum ||
-                        sourceProperty.PropertyType.IsArray ||
-                        sourceProperty.PropertyType.Equals(typeof(string)) ||
-                        sourceProperty.PropertyType.Equals(typeof(Guid)) ||
-                        sourceProperty.PropertyType.Equals(typeof(DateTime)) ||
-                        sourceProperty.PropertyType.Equals(typeof(decimal)) ||
-                        sourceProperty.PropertyType.Equals(typeof(double)) ||
-                        sourceProperty.PropertyType.Equals(typeof(int)) ||
-                        sourceProperty.PropertyType.Equals(typeof(long)) ||
-                        sourceProperty.PropertyType.Equals(typeof(char)) ||
-                        Nullable.GetUnderlyingType(sourceProperty.PropertyType) != null
-                       )
-                    {
-                        if (!targetProperty.CanWrite)
-                        {
-                            break;
-                        }
-                        targetProperty.SetValue(target, sourceProperty.GetValue(source));
-                    }
-                    else
-                    {
-                        var sourceValue = sourceProperty.GetValue(source);
-                        if (sourceValue == null)
-                        {
-                            break;
-                        }
-
-                        var targetValue = Map(sourceValue, targetProperty.PropertyType);
-                        if (targetValue == null)
-                        {
-                            break;
-                        }
-                        targetProperty.SetValue(target, targetValue);
-                    }
-                    break;
+                    destProp.SetValue(destination, nestedDestination);
                 }
             }
-            return target;
         }
 
+        private static void MapCollection(object sourceValue, PropertyInfo destProp, object destination)
+        {
+            var destPropType = destProp.PropertyType;
+            var itemType = destPropType.IsArray ? destPropType.GetElementType() : destPropType.GetGenericArguments().FirstOrDefault();
+
+            if (itemType == null)
+            {
+                return;
+            }
+
+            var sourceCollection = (IEnumerable)sourceValue;
+            var destinationList = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
+            if (destinationList == null)
+            {
+                return;
+            }
+
+            foreach (var item in sourceCollection)
+            {
+                if (IsPrimitiveOrSimpleType(itemType) || itemType.IsEnum)
+                {
+                    destinationList.Add(item);
+                    continue;
+                }
+                var nestedItem = Activator.CreateInstance(itemType);
+                if (nestedItem != null)
+                {
+                    MapObject(item, nestedItem);
+                }
+                destinationList.Add(nestedItem);
+            }
+
+            if (destPropType.IsArray)
+            {
+                var array = Array.CreateInstance(itemType, destinationList.Count);
+                destinationList.CopyTo(array, 0);
+                destProp.SetValue(destination, array);
+            }
+            else
+            {
+                destProp.SetValue(destination, destinationList);
+            }
+        }
+
+        private static bool IsPrimitiveOrSimpleType(Type type)
+        {
+            return type.IsEnum ||
+                type.IsPrimitive ||
+                new[]
+                {
+                typeof(string),
+                typeof(Guid),
+                typeof(DateTime),
+                typeof(decimal),
+                typeof(double),
+                typeof(int),
+                typeof(long),
+                typeof(char)
+                }.Contains(type) ||
+                Nullable.GetUnderlyingType(type) != null;
+        }
     }
 }
