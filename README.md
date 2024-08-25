@@ -5,7 +5,7 @@
 SimpleAutoMapper is available as a NuGet package. You can install it using the NuGet Package Manager in Visual Studio or via the .NET CLI:
 
 ```shell
-Install-Package SimpleAutoMapper -Version 1.2.0
+Install-Package SimpleAutoMapper -Version 1.2.5
 ```
 Alternatively, you can download the package directly from the NuGet website at https://www.nuget.org/packages/SimpleAutoMapper.
 
