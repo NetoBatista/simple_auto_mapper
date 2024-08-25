@@ -1,34 +1,49 @@
 # SimpleAutoMapper
+**SimpleAutoMapper** is a lightweight and intuitive library designed to simplify object mapping in C#. With this tool, you can effortlessly map properties and nested objects between different models, making it ideal for projects that require quick and efficient object transformation.
 
-SimpleAutoMapper is a lightweight and easy-to-use library for automatic object mapping in C#. It allows you to map an object to another one efficiently and intuitively.
-
-## How to install
-
-SimpleAutoMapper is available as a NuGet package. You can install it using the NuGet package manager in Visual Studio or through the command line.
+## Installation
+SimpleAutoMapper is available as a NuGet package. You can install it using the NuGet Package Manager in Visual Studio or via the .NET CLI:
 
 ```shell
-Install-Package SimpleAutoMapper -Version 1.1.3
+Install-Package SimpleAutoMapper -Version 1.2.0
 ```
-You can also download the package directly from the NuGet website at https://www.nuget.org/packages/SimpleAutoMapper.
+Alternatively, you can download the package directly from the NuGet website at https://www.nuget.org/packages/SimpleAutoMapper.
 
-How to use
-To use SimpleAutoMapper, first add the following line at the top of your file:
+## Getting Started
+To start using SimpleAutoMapper, add the following reference at the top of your file:
 
 ```C#
 using SimpleAutoMapper;
 var response = AutoMapper.Map<ResponseModel>(request);
 ```
 
-In this example, request is the object that you want to map and ResponseModel is the type of the target object. The Map<T> method creates a new instance of ResponseModel, maps the properties of the request object to the ResponseModel object and returns the ResponseModel object.
+In this example:
+
+- `request` is the source object you want to map.
+- `ResponseModel` is the target type.
+- The `Map<T>` method creates a new instance of `ResponseModel`, maps the properties from `request`, and returns the result.
 
 ## Features
-* Automatic mapping of properties with the same name and type.
-* Support for primitive types, strings, Guids, DateTimes and nullable types.
-* Recursive mapping for complex objects.
-* Support for lists and collections.
+- Automatic Property Mapping: Automatically maps properties with matching names and types.
+- Primitive Type Support: Handles basic data types, including strings, Guids, DateTimes, and nullable types.
+- Recursive Mapping: Maps complex nested objects, supporting deep object hierarchies.
+- List and Array Handling: Differentiates between collections of primitive types and complex objects, applying recursive mapping where needed.
+- Nullable and Read-Only Handling: Manages nullable types and safely skips read-only properties.
 
 ## Limitations
-* The properties must have public setters to be mapped.
-* The mapping is not done in depth for lists or collections of complex objects. Each object in the list or collection is mapped individually.
+- Public Setters Required: Properties must have public setters to be mapped.
+- Shallow Mapping for Primitive Collections: Lists and arrays of primitive types are handled without deep inspection.
+- Custom Mapping Logic: No support for custom conversion logic or attribute-based mappings.
+- Circular References: Circular dependencies between objects are not handled, which can cause stack overflow errors.
 
-We hope you find SimpleAutoMapper useful for your C# projects! If you have any questions or suggestions, feel free to open an issue.
+## Usage Notes
+- Ensure that complex objects are correctly initialized in nested properties to avoid null reference exceptions.
+- The library uses reflection extensively; while efficient for many scenarios, it may introduce overhead in high-performance applications.
+
+## Contributing
+We welcome contributions! Feel free to open issues or submit pull requests to help improve SimpleAutoMapper. For major changes, please open an issue first to discuss your proposal.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/NetoBatista/simple_auto_mapper?tab=MIT-1-ov-file) file for details.
+
+We hope SimpleAutoMapper makes your object mapping simpler and more efficient! If you have any questions or suggestions, feel free to open an issue.
