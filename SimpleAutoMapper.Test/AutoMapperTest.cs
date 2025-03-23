@@ -5,8 +5,8 @@ namespace SimpleAutoMapper.Test
     [TestClass]
     public class AutoMapperTest
     {
-        [TestMethod]
-        public void Map_ShouldCopyAllPropertiesWithThreeLevelsOfRecursionCorrectly()
+        [TestMethod("Should be able copy all properties with three level of recursion")]
+        public void MapFullObject()
         {
             // Arrange
             var source = new SourceModel
@@ -120,6 +120,5 @@ namespace SimpleAutoMapper.Test
             Assert.AreEqual(source.Nested.NestedClassArray[0].Id, destination.Nested.NestedClassArray[0].Id);
             Assert.AreEqual(source.Nested.NestedClassArray[1].Id, destination.Nested.NestedClassArray[1].Id);
         }
-
     }
 }
