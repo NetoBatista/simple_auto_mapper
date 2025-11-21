@@ -35,20 +35,20 @@ namespace SimpleAutoMapper.Mappers
                 if (TypeUtil.IsPrimitiveOrSimpleType(destPropType) || destPropType.IsEnum)
                 {
                     destProp.SetValue(destination, sourceValue);
+                    continue;
                 }
                 else if (typeof(IEnumerable).IsAssignableFrom(destPropType))
                 {
                     CollectionMapper.Map(sourceValue, destProp, destination);
+                    continue;
                 }
-                else
+
+                var nestedDestination = Activator.CreateInstance(destPropType);
+                if (nestedDestination != null)
                 {
-                    var nestedDestination = Activator.CreateInstance(destPropType);
-                    if (nestedDestination != null)
-                    {
-                        Map(sourceValue, nestedDestination);
-                    }
-                    destProp.SetValue(destination, nestedDestination);
+                    Map(sourceValue, nestedDestination);
                 }
+                destProp.SetValue(destination, nestedDestination);
             }
         }
     }

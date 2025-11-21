@@ -5,7 +5,7 @@ namespace SimpleAutoMapper.Test;
 [TestClass]
 public class CollectionMapperTest
 {
-    [TestMethod("Should be able map collection")]
+    [TestMethod(DisplayName = "Should be able map collection")]
     public void MapCollection()
     {
         var source = new List<SourceModel>

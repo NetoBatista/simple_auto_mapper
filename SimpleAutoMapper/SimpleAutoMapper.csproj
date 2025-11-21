@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -13,10 +13,10 @@
 		<RepositoryUrl>https://github.com/NetoBatista/simple_auto_mapper</RepositoryUrl>
 		<Company>JBSN</Company>
 		<Authors>JBSN</Authors>
-		<Version>1.2.6</Version>
+		<Version>1.2.7</Version>
 		<Title>$(AssemblyName)</Title>
 		<Description>SimpleAutoMapper simplifies the process of mapping data in your application.</Description>
-		<PackageTags>1.2.6</PackageTags>
+		<PackageTags>1.2.7</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>

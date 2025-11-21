@@ -5,7 +5,7 @@ namespace SimpleAutoMapper.Test;
 [TestClass]
 public class ObjectMapperTest
 {
-    [TestMethod("Should be able map object")]
+    [TestMethod(DisplayName = "Should be able map object")]
     public void MapObject()
     {
         var source = new SourceModel

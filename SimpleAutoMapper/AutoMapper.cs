@@ -19,11 +19,10 @@ namespace SimpleAutoMapper
                 return destination;
             }
 
-            var sourceList = (IEnumerable)source;
             var itemType = typeof(TDestination).GetGenericArguments()[0];
             var destinationList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
 
-            foreach (var item in sourceList)
+            foreach (var item in (IEnumerable) source)
             {
                 var mappedItem = CollectionItemMapper.Map(itemType, item);
                 destinationList.Add(mappedItem);

@@ -5,7 +5,7 @@ namespace SimpleAutoMapper.Test
     [TestClass]
     public class AutoMapperTest
     {
-        [TestMethod("Should be able copy all properties with three level of recursion")]
+        [TestMethod(DisplayName = "Should be able copy all properties with three level of recursion")]
         public void MapFullObject()
         {
             // Arrange
@@ -43,13 +43,65 @@ namespace SimpleAutoMapper.Test
                     StringArray = ["Three", "Four"],
                     NestedClassList =
                     [
-                        new SourceModel { Id = 7, Name = "NestedListSourceLevel3-1" },
-                        new SourceModel { Id = 8, Name = "NestedListSourceLevel3-2" }
+                        new SourceModel
+                        {
+                            Id = 7,
+                            Name = "NestedList7",
+                            Value = 100.50m,
+                            Status = StatusEnum.Active,
+                            UniqueId = Guid.NewGuid(),
+                            NullableInt = 5,
+                            Date = DateTime.Now,
+                            IntList = [1, 2, 3],
+                            GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                            EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                            StringArray = ["One", "Two"]
+                        },
+                        new SourceModel
+                        {
+                            Id = 8,
+                            Name = "NestedList8",
+                            Value = 100.50m,
+                            Status = StatusEnum.Active,
+                            UniqueId = Guid.NewGuid(),
+                            NullableInt = 5,
+                            Date = DateTime.Now,
+                            IntList = [1, 2, 3],
+                            GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                            EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                            StringArray = ["One", "Two"]
+                        },
                     ],
                     NestedClassArray =
                     [
-                        new SourceModel { Id = 9, Name = "NestedArraySourceLevel3-1" },
-                        new SourceModel { Id = 10, Name = "NestedArraySourceLevel3-2" }
+                        new SourceModel
+                        {
+                            Id = 9,
+                            Name = "NestedInternalArray9",
+                            Value = 100.50m,
+                            Status = StatusEnum.Active,
+                            UniqueId = Guid.NewGuid(),
+                            NullableInt = 5,
+                            Date = DateTime.Now,
+                            IntList = [1, 2, 3],
+                            GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                            EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                            StringArray = ["One", "Two"]
+                        },
+                        new SourceModel
+                        {
+                            Id = 10,
+                            Name = "NestedInternalArray10",
+                            Value = 100.50m,
+                            Status = StatusEnum.Active,
+                            UniqueId = Guid.NewGuid(),
+                            NullableInt = 5,
+                            Date = DateTime.Now,
+                            IntList = [1, 2, 3],
+                            GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                            EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                            StringArray = ["One", "Two"]
+                        },
                     ]
                 },
                 IntList = [1, 2, 3],
@@ -58,13 +110,65 @@ namespace SimpleAutoMapper.Test
                 StringArray = ["One", "Two"],
                 NestedClassList =
                 [
-                    new SourceModel { Id = 11, Name = "NestedListSource1" },
-                    new SourceModel { Id = 12, Name = "NestedListSource2" }
+                    new SourceModel
+                    {
+                        Id = 11,
+                        Name = "NestedArray11",
+                        Value = 100.50m,
+                        Status = StatusEnum.Active,
+                        UniqueId = Guid.NewGuid(),
+                        NullableInt = 5,
+                        Date = DateTime.Now,
+                        IntList = [1, 2, 3],
+                        GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                        EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                        StringArray = ["One", "Two"]
+                    },
+                    new SourceModel
+                    {
+                        Id = 12,
+                        Name = "NestedArray12",
+                        Value = 100.50m,
+                        Status = StatusEnum.Active,
+                        UniqueId = Guid.NewGuid(),
+                        NullableInt = 5,
+                        Date = DateTime.Now,
+                        IntList = [1, 2, 3],
+                        GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                        EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                        StringArray = ["One", "Two"]
+                    },
                 ],
                 NestedClassArray =
                 [
-                    new SourceModel { Id = 13, Name = "NestedArraySource1" },
-                    new SourceModel { Id = 14, Name = "NestedArraySource2" }
+                    new SourceModel
+                    {
+                        Id = 13,
+                        Name = "NestedArray13",
+                        Value = 100.50m,
+                        Status = StatusEnum.Active,
+                        UniqueId = Guid.NewGuid(),
+                        NullableInt = 5,
+                        Date = DateTime.Now,
+                        IntList = [1, 2, 3],
+                        GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                        EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                        StringArray = ["One", "Two"]
+                    },
+                    new SourceModel
+                    {
+                        Id = 10,
+                        Name = "NestedArray10",
+                        Value = 100.50m,
+                        Status = StatusEnum.Active,
+                        UniqueId = Guid.NewGuid(),
+                        NullableInt = 5,
+                        Date = DateTime.Now,
+                        IntList = [1, 2, 3],
+                        GuidArray = [Guid.NewGuid(), Guid.NewGuid()],
+                        EnumList = [StatusEnum.Active, StatusEnum.Inactive],
+                        StringArray = ["One", "Two"]
+                    },
                 ]
             };
 
@@ -101,24 +205,92 @@ namespace SimpleAutoMapper.Test
             CollectionAssert.AreEqual(source.GuidArray, destination.GuidArray);
             CollectionAssert.AreEqual(source.EnumList, destination.EnumList);
             CollectionAssert.AreEqual(source.StringArray, destination.StringArray);
-            Assert.AreEqual(source.NestedClassList.Count, destination.NestedClassList.Count);
+
+            // Check NestedClassList
+            Assert.HasCount(source.NestedClassList.Count, destination.NestedClassList);
             Assert.AreEqual(source.NestedClassList[0].Id, destination.NestedClassList[0].Id);
+            Assert.AreEqual(source.NestedClassList[0].Name, destination.NestedClassList[0].Name);
+            Assert.AreEqual(source.NestedClassList[0].Value, destination.NestedClassList[0].Value);
+            Assert.AreEqual(source.NestedClassList[0].Status, destination.NestedClassList[0].Status);
+            Assert.AreEqual(source.NestedClassList[0].UniqueId, destination.NestedClassList[0].UniqueId);
+            Assert.AreEqual(source.NestedClassList[0].NullableInt, destination.NestedClassList[0].NullableInt);
+            Assert.AreEqual(source.NestedClassList[0].Date, destination.NestedClassList[0].Date);
+            Assert.AreEqual("ReadOnly", destination.NestedClassList[0].ReadOnlyValue);
+
             Assert.AreEqual(source.NestedClassList[1].Id, destination.NestedClassList[1].Id);
-            Assert.AreEqual(source.NestedClassArray.Length, destination.NestedClassArray.Length);
+            Assert.AreEqual(source.NestedClassList[1].Name, destination.NestedClassList[1].Name);
+            Assert.AreEqual(source.NestedClassList[1].Value, destination.NestedClassList[1].Value);
+            Assert.AreEqual(source.NestedClassList[1].Status, destination.NestedClassList[1].Status);
+            Assert.AreEqual(source.NestedClassList[1].UniqueId, destination.NestedClassList[1].UniqueId);
+            Assert.AreEqual(source.NestedClassList[1].NullableInt, destination.NestedClassList[1].NullableInt);
+            Assert.AreEqual(source.NestedClassList[1].Date, destination.NestedClassList[1].Date);
+            Assert.AreEqual("ReadOnly", destination.NestedClassList[1].ReadOnlyValue);
+
+            // Check NestedClassArray
+            Assert.HasCount(source.NestedClassArray.Length, destination.NestedClassArray);
             Assert.AreEqual(source.NestedClassArray[0].Id, destination.NestedClassArray[0].Id);
+            Assert.AreEqual(source.NestedClassArray[0].Name, destination.NestedClassArray[0].Name);
+            Assert.AreEqual(source.NestedClassArray[0].Value, destination.NestedClassArray[0].Value);
+            Assert.AreEqual(source.NestedClassArray[0].Status, destination.NestedClassArray[0].Status);
+            Assert.AreEqual(source.NestedClassArray[0].UniqueId, destination.NestedClassArray[0].UniqueId);
+            Assert.AreEqual(source.NestedClassArray[0].NullableInt, destination.NestedClassArray[0].NullableInt);
+            Assert.AreEqual(source.NestedClassArray[0].Date, destination.NestedClassArray[0].Date);
+            Assert.AreEqual("ReadOnly", destination.NestedClassArray[0].ReadOnlyValue);
+
             Assert.AreEqual(source.NestedClassArray[1].Id, destination.NestedClassArray[1].Id);
+            Assert.AreEqual(source.NestedClassArray[1].Name, destination.NestedClassArray[1].Name);
+            Assert.AreEqual(source.NestedClassArray[1].Value, destination.NestedClassArray[1].Value);
+            Assert.AreEqual(source.NestedClassArray[1].Status, destination.NestedClassArray[1].Status);
+            Assert.AreEqual(source.NestedClassArray[1].UniqueId, destination.NestedClassArray[1].UniqueId);
+            Assert.AreEqual(source.NestedClassArray[1].NullableInt, destination.NestedClassArray[1].NullableInt);
+            Assert.AreEqual(source.NestedClassArray[1].Date, destination.NestedClassArray[1].Date);
+            Assert.AreEqual("ReadOnly", destination.NestedClassArray[1].ReadOnlyValue);
 
             // Nested objects within the second level
             CollectionAssert.AreEqual(source.Nested.IntList, destination.Nested.IntList);
             CollectionAssert.AreEqual(source.Nested.GuidArray, destination.Nested.GuidArray);
             CollectionAssert.AreEqual(source.Nested.EnumList, destination.Nested.EnumList);
             CollectionAssert.AreEqual(source.Nested.StringArray, destination.Nested.StringArray);
-            Assert.AreEqual(source.Nested.NestedClassList.Count, destination.Nested.NestedClassList.Count);
+
+            // Check NestedClassList
+            Assert.HasCount(source.Nested.NestedClassList.Count, destination.NestedClassList);
             Assert.AreEqual(source.Nested.NestedClassList[0].Id, destination.Nested.NestedClassList[0].Id);
+            Assert.AreEqual(source.Nested.NestedClassList[0].Name, destination.Nested.NestedClassList[0].Name);
+            Assert.AreEqual(source.Nested.NestedClassList[0].Value, destination.Nested.NestedClassList[0].Value);
+            Assert.AreEqual(source.Nested.NestedClassList[0].Status, destination.Nested.NestedClassList[0].Status);
+            Assert.AreEqual(source.Nested.NestedClassList[0].UniqueId, destination.Nested.NestedClassList[0].UniqueId);
+            Assert.AreEqual(source.Nested.NestedClassList[0].NullableInt, destination.Nested.NestedClassList[0].NullableInt);
+            Assert.AreEqual(source.Nested.NestedClassList[0].Date, destination.Nested.NestedClassList[0].Date);
+            Assert.AreEqual("ReadOnly", destination.Nested.NestedClassList[0].ReadOnlyValue);
+
             Assert.AreEqual(source.Nested.NestedClassList[1].Id, destination.Nested.NestedClassList[1].Id);
-            Assert.AreEqual(source.Nested.NestedClassArray.Length, destination.Nested.NestedClassArray.Length);
+            Assert.AreEqual(source.Nested.NestedClassList[1].Name, destination.Nested.NestedClassList[1].Name);
+            Assert.AreEqual(source.Nested.NestedClassList[1].Value, destination.Nested.NestedClassList[1].Value);
+            Assert.AreEqual(source.Nested.NestedClassList[1].Status, destination.Nested.NestedClassList[1].Status);
+            Assert.AreEqual(source.Nested.NestedClassList[1].UniqueId, destination.Nested.NestedClassList[1].UniqueId);
+            Assert.AreEqual(source.Nested.NestedClassList[1].NullableInt, destination.Nested.NestedClassList[1].NullableInt);
+            Assert.AreEqual(source.Nested.NestedClassList[1].Date, destination.Nested.NestedClassList[1].Date);
+            Assert.AreEqual("ReadOnly", destination.Nested.NestedClassList[1].ReadOnlyValue);
+
+            // Check NestedClassArray
+            Assert.HasCount(source.Nested.NestedClassArray.Length, destination.Nested.NestedClassArray);
             Assert.AreEqual(source.Nested.NestedClassArray[0].Id, destination.Nested.NestedClassArray[0].Id);
+            Assert.AreEqual(source.Nested.NestedClassArray[0].Name, destination.Nested.NestedClassArray[0].Name);
+            Assert.AreEqual(source.Nested.NestedClassArray[0].Value, destination.Nested.NestedClassArray[0].Value);
+            Assert.AreEqual(source.Nested.NestedClassArray[0].Status, destination.Nested.NestedClassArray[0].Status);
+            Assert.AreEqual(source.Nested.NestedClassArray[0].UniqueId, destination.Nested.NestedClassArray[0].UniqueId);
+            Assert.AreEqual(source.Nested.NestedClassArray[0].NullableInt, destination.Nested.NestedClassArray[0].NullableInt);
+            Assert.AreEqual(source.Nested.NestedClassArray[0].Date, destination.Nested.NestedClassArray[0].Date);
+            Assert.AreEqual("ReadOnly", destination.Nested.NestedClassArray[0].ReadOnlyValue);
+
             Assert.AreEqual(source.Nested.NestedClassArray[1].Id, destination.Nested.NestedClassArray[1].Id);
+            Assert.AreEqual(source.Nested.NestedClassArray[1].Name, destination.Nested.NestedClassArray[1].Name);
+            Assert.AreEqual(source.Nested.NestedClassArray[1].Value, destination.Nested.NestedClassArray[1].Value);
+            Assert.AreEqual(source.Nested.NestedClassArray[1].Status, destination.Nested.NestedClassArray[1].Status);
+            Assert.AreEqual(source.Nested.NestedClassArray[1].UniqueId, destination.Nested.NestedClassArray[1].UniqueId);
+            Assert.AreEqual(source.Nested.NestedClassArray[1].NullableInt, destination.Nested.NestedClassArray[1].NullableInt);
+            Assert.AreEqual(source.Nested.NestedClassArray[1].Date, destination.Nested.NestedClassArray[1].Date);
+            Assert.AreEqual("ReadOnly", destination.Nested.NestedClassArray[1].ReadOnlyValue);
         }
     }
 }

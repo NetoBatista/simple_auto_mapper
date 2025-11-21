@@ -5,7 +5,7 @@ namespace SimpleAutoMapper.Test;
 [TestClass]
 public class CollectionItemMapperTest
 {
-    [TestMethod("Should be able map item of collection")]
+    [TestMethod(DisplayName = "Should be able map item of collection")]
     public void MapItem()
     {
         var source = new SourceModel
@@ -73,7 +73,7 @@ public class CollectionItemMapperTest
         CollectionAssert.AreEqual(source.StringArray, destination.StringArray);
 
         // Check in NestedClassList
-        Assert.AreEqual(source.NestedClassList.Count, destination.NestedClassList.Count);
+        Assert.HasCount(source.NestedClassList.Count, destination.NestedClassList);
         Assert.AreEqual(source.NestedClassList[0].Id, destination.NestedClassList[0].Id);
         Assert.AreEqual(source.NestedClassList[0].Name, destination.NestedClassList[0].Name);
 
@@ -89,7 +89,7 @@ public class CollectionItemMapperTest
         CollectionAssert.AreEqual(source.NestedClassList[0].StringArray, destination.NestedClassList[0].StringArray);
 
         // Check in NestedClassArray
-        Assert.AreEqual(source.NestedClassArray.Length, destination.NestedClassArray.Length);
+        Assert.HasCount(source.NestedClassArray.Length, destination.NestedClassArray);
         Assert.AreEqual(source.NestedClassArray[0].Id, destination.NestedClassArray[0].Id);
         Assert.AreEqual(source.NestedClassArray[0].Name, destination.NestedClassArray[0].Name);
 

@@ -16,14 +16,13 @@ namespace SimpleAutoMapper.Mappers
                 return;
             }
 
-            var sourceCollection = (IEnumerable)sourceValue;
             var destinationList = (IList?)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType));
             if (destinationList == null)
             {
                 return;
             }
 
-            foreach (var item in sourceCollection)
+            foreach (var item in (IEnumerable) sourceValue)
             {
                 if (TypeUtil.IsPrimitiveOrSimpleType(itemType) || itemType.IsEnum)
                 {
